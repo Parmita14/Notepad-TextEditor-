@@ -18,36 +18,36 @@ JTextArea jta = new JTextArea();
 File fnameContainer;
 
 public NotePad(){
-    Font fnt = new Font("Arial" , Font.PLAIN,15);
-    Container con = getContentPane();
-    JMenuBar jmb = new JMenuBar();
-    JMenu jmfile = new JMenu("File");
+    Font fnt = new Font("Arial" , Font.PLAIN,15); // name,style and size are specified.
+    Container con = getContentPane();  // layer holds object in container**
+    JMenuBar jmb = new JMenuBar();     //holdsjmenu
+    JMenu jmfile = new JMenu("File"); // JMenu here will help to show many menu items
     JMenu jmedit = new JMenu("edit");
     JMenu jmhelp = new JMenu("Help");
-    con.setLayout(new BorderLayout());
-    JScrollPane sbrText = new JScrollPane(jta);
-    sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    sbrText.setVisible(true);
+    con.setLayout(new BorderLayout()); // gives borderlayout **
+    JScrollPane sbrText = new JScrollPane(jta);// here i have added component text area n given it a scroll bar.
+    sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);//JScrollPane->class->
+    sbrText.setVisible(true);// to view the scrollbar
     
-    jta.setFont(fnt);
-    jta.setLineWrap(true);
-    jta.setWrapStyleWord(true);
+    jta.setFont(fnt); // textarea font
+    jta.setLineWrap(true); // to display text in multiple line rather than in one single line
+    jta.setWrapStyleWord(true);// word is used so that it wraps by word not by character
     
-    con.add(sbrText);
+    con.add(sbrText); //to add scroll bar in container
     
-    createMenuItem(jmfile,"NEW");
+    createMenuItem(jmfile,"NEW");// created menu item in file
     createMenuItem(jmfile,"Open");
     createMenuItem(jmfile,"Save");
-    jmfile.addSeparator();
+    jmfile.addSeparator();// to separate these menu items
     createMenuItem(jmfile,"Exit");
-      
+     //pop up menu of edit 
     createMenuItem(jmedit,"Exit");
     createMenuItem(jmedit,"Cut");
     createMenuItem(jmedit,"Copy");
     createMenuItem(jmedit,"Paste");
     
     createMenuItem(jmhelp,"About NotePad");
-    
+    // file edit and help are added in menubar
     jmb.add(jmfile);
     jmb.add(jmedit);
     jmb.add(jmhelp);
@@ -55,6 +55,8 @@ public NotePad(){
     setJMenuBar(jmb);
     
     setIconImage(Toolkit.getDefaultToolkit().getImage("notepad.gif"));
+    // to perform window events
+    // used for notepad window
     addWindowListener(this);
     setSize(500,500);
     setTitle("Untitled.txt - Notepad");
@@ -63,31 +65,31 @@ public NotePad(){
 }
  
 public void createMenuItem(JMenu jm,  String txt){
- JMenuItem jmi = new JMenuItem(txt);
- jmi.addActionListener(this);
- jm.add(jmi); 
+ JMenuItem jmi = new JMenuItem(txt); // creates menu item of specified text.
+ jmi.addActionListener(this);// so that whenever i click it will take it as an action
+ jm.add(jmi); // added in menu
 }
-public void actionPerformed(ActionEvent e){
-    JFileChooser jfc = new JFileChooser();
-    if(e.getActionCommand().equals("New")){
-        this.setTitle("Untitled.txt-Notepad");
+public void actionPerformed(ActionEvent e){ // as actionperformed is method of actionlistener it is invoked when action occurs
+    JFileChooser jfc = new JFileChooser(); // file chooser is dialog window from which user will choose file
+    if(e.getActionCommand().equals("New")){// getaction will return me string
+        this.setTitle("Untitled.txt-Notepad");//to form new notepad
         jta.setText("");
         fnameContainer = null;
     }else if(e.getActionCommand().equals("Open")){
         int ret = jfc.showDialog(null,"Open");
-        if(ret == JFileChooser.APPROVE_OPTION){
+        if(ret == JFileChooser.APPROVE_OPTION){ // if ok is selected then value is return whith approve option
             // for calling filechooser
             try{
-                File fy1 = jfc.getSelectedFile();
-                OpenFile(fy1.getAbsolutePath());
-                this.setTitle(fyl.getName() +" - Notepad" );
+                File fyl = jfc.getSelectedFile();// Returns the selected file
+                OpenFile(fyl.getAbsolutePath());//absolute file path name is passed in openfile
+                this.setTitle(fyl.getName() +" - Notepad" );//give same title 
                 fnameContainer = fyl;
             }catch(IOException ets){}
             
         }
     }else if(e.getActionCommand().equals("Save")){
         if(fnameContainer != null){
-            jfc.setCurrentDirectory(fnameContainer);
+            jfc.setCurrentDirectory(fnameContainer);// contains info need to access the file
             jfc.setSelectedFile(fnameContainer);
         }else{
             jfc.setSelectedFile(new File("Untitled.txt"));
